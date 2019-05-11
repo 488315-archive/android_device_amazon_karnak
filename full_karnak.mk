@@ -130,4 +130,26 @@ PRODUCT_PACKAGES += \
 
 
 
+
+
+
+
+PRODUCT_PACKAGES += \
+    fstab.mt8163 \
+    init.mt8163.rc \
+    init.mt8163.usb.rc \
+    init.project.rc \
+    init.trace.rc \
+    init.recovery.mt8163.rc \
+    ueventd.mt8163.rc \
+    multi_init.rc \
+    fstab.zram \
+    meta_init.rc \
+    meta_init_project.rc \
+    meta_init_modem.rc \
+    meta_init_connectivity.rc \
+
+
+
+
    
