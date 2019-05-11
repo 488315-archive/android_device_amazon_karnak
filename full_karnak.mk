@@ -114,4 +114,20 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/lib/hw/hwcomposer.mt8163.so:system/vendor/lib/hw/hwcomposer.mt8163.so \
    $(LOCAL_PATH)/lib/hw/lights.mt8163.so:system/vendor/lib/hw/lights.mt8163.so \
    $(LOCAL_PATH)/lib/hw/memtrack.mt8163.so:system/vendor/lib/hw/memtrack.mt8163.so 
+
+
+
+PRODUCT_PACKAGES += \
+	wifi2agps \
+
+
+PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+
+
+
    
