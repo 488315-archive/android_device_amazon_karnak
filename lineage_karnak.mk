@@ -10,12 +10,12 @@ DEVICE_FOLDER := device/amazon/karnak
 
 
 
-PRODUCT_NAME := full_karnak
+PRODUCT_NAME := lineage_karnak
 PRODUCT_DEVICE := karnak
 PRODUCT_BRAND := Fire
 PRODUCT_MODEL := KFKAWI
 PRODUCT_BOARD := karnak
-PRODUCT_MANUFACTURER := amzn
+PRODUCT_MANUFACTURER := amazon
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal large
