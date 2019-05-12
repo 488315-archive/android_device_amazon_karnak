@@ -71,11 +71,11 @@ PRODUCT_COPY_FILES += \
 
 
 # SBIN
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/sbin/crashreport:root/sbin/crashreport \
-#    $(LOCAL_PATH)/sbin/multi_init:root/sbin/multi_init
-#    $(LOCAL_PATH)/binary/md32_d.bin:root/md32_d.bin \
-#    $(LOCAL_PATH)/binary/md32_d.bin:root/md32_p.bin \
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/sbin/crashreport:root/sbin/crashreport \
+   $(LOCAL_PATH)/sbin/multi_init:root/sbin/multi_init
+   $(LOCAL_PATH)/binary/md32_d.bin:root/md32_d.bin \
+   $(LOCAL_PATH)/binary/md32_d.bin:root/md32_p.bin \
 TARGET_USE_BUILT_BOOTIMAGE := device/amazon/karnak/boot.img
 
 
@@ -89,7 +89,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/thermal/thermal.off.conf:system/vendor/etc/.tp/thermal.off.conf \
     $(LOCAL_PATH)/thermal/.ht120.mtc:system/vendor/etc/.tp/.ht120.mtc
 
-
+#media
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/audio_device.xml:system/vendor/etc/audio_device.xml \
     $(LOCAL_PATH)/vendor/audio_em.xml:system/vendor/etc/audio_em.xml \
@@ -133,7 +133,7 @@ PRODUCT_PACKAGES += \
 
 
 
-
+#init files
 PRODUCT_PACKAGES += \
     fstab.mt8163 \
     init.mt8163.rc \
