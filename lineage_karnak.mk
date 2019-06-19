@@ -1,9 +1,8 @@
-
-$(call inherit-product, vendor/cm/config/common_full_tablet_wifionly.mk)
+$(call inherit-product, vendor/lineage/config/common_full_tablet_wifionly.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core.mk)
 $(call inherit-product, device/amazon/karnak/device.mk)
 
-LINEAGEOS_VERSION := 16.0
+LINEAGEOS_VERSION := 15.1
 PRODUCT_CHARACTERISTICS := tablet
 LOCAL_PATH := device/amazon/karnak
 DEVICE_FOLDER := device/amazon/karnak
@@ -33,7 +32,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.mtk_key_manager_kb_path=1 \
     persist.sys.usb.config=mtp,adb \
     persist.service.adb.enable=1 \
-    persist.service.debuggable=1
+    persist.service.debuggable=1 \
+    persist.sys.debug.multi_window=true
 
 #Build.prop
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -41,8 +41,115 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.service.adb.enable=1 \
     persist.service.debuggable=1
 
+BOARD_SECCOMP_POLICY := \
+    $(LOCAL_PATH)/seccomp-policy
+
+
+#HW
+PRODUCT_PACKAGES +=\
+    lights.mt8163.so
+  
+
+
+#wifi
+PRODUCT_PACKAGES += \
+	wifi2agps \
+
+#wpa 
+PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf \
+
+
+
+
+# Audio
+PRODUCT_PACKAGES += \
+    audio.r_submix.mt8163 \
+    audio.usb.default \
+    audio_policy.stub \
+    audio.r_submix.default \
+    audio.usb.default \
+    libaudio-resampler \
+    libaudioroute \
+    libtinyalsa \
+    libalsautils
+
+# Net
+PRODUCT_PACKAGES += \
+    netutils-wrapper-1.0
+
+
+# Ramdisk
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,$(DEVICE_FOLDER)/rootdir,root)
+
+
+#audio
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration.xml \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    $(TOPDIR)frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
+
+
+
+
+# Display
+#PRODUCT_PACKAGES += \
+#    android.hardware.graphics.allocator@2.0-impl \
+#    android.hardware.graphics.allocator@2.0-service \
+#    android.hardware.graphics.mapper@2.0-impl \
+#    android.hardware.graphics.composer@2.1-impl \
+#   android.hardware.graphics.composer@2.1-service \
+#   android.hardware.memtrack@1.0-impl \
+#    android.hardware.memtrack@1.0-service \
+    #pvrsrvctl
+
+
+# HIDL
+#PRODUCT_PACKAGES += \
+#    android.hidl.base@1.0 \
+#    android.hidl.manager@1.0
+
+
+
+# VNDK-SP:
+PRODUCT_PACKAGES += \
+    vndk-sp
+
+# Light
+PRODUCT_PACKAGES += \
+    lights.mt8163 \
+    android.hardware.light@2.0-impl-mediatek \
+    android.hardware.light@2.0-service-mediatek
+
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video_le.xml
+
+
+# Camera
+PRODUCT_PACKAGES += \
+    Snap
+
+# DRM
+PRODUCT_PACKAGES += \
+    libdrm \
+    libmockdrmcryptoplugin \
+    libdrmclearkeyplugin 
+
+
+
 PRODUCT_PACKAGES += \
     libion \
+    libcap
 
 
 # Permissions
@@ -67,17 +174,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
 
 
-
-
-# SBIN
-PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/sbin/crashreport:root/sbin/crashreport \
-   $(LOCAL_PATH)/sbin/multi_init:root/sbin/multi_init
-   $(LOCAL_PATH)/binary/md32_d.bin:root/md32_d.bin \
-   $(LOCAL_PATH)/binary/md32_d.bin:root/md32_p.bin \
-TARGET_USE_BUILT_BOOTIMAGE := device/amazon/karnak/boot.img
-
-
 #KeyBoard
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
@@ -88,7 +184,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/thermal/thermal.off.conf:system/vendor/etc/.tp/thermal.off.conf \
     $(LOCAL_PATH)/thermal/.ht120.mtc:system/vendor/etc/.tp/.ht120.mtc
 
-#media
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/audio_device.xml:system/vendor/etc/audio_device.xml \
     $(LOCAL_PATH)/vendor/audio_em.xml:system/vendor/etc/audio_em.xml \
@@ -98,10 +194,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/vendor/throttle.sh:system/vendor/etc/throttle.sh
 
 
-# Create symlinks.
-LOCAL_POST_INSTALL_CMD := $(hide) mkdir -p $(TARGET_ROOT_OUT)/sbin; \
-    ln -sf ../init $(TARGET_ROOT_OUT)/sbin/ueventd; \
-    ln -sf ../init $(TARGET_ROOT_OUT)/sbin/watchdogd
+
 
 #libs
 PRODUCT_COPY_FILES += \
@@ -111,105 +204,24 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/lib/hw/gatekeeper.mt8163.so:system/vendor/lib/hw/gatekeeper.mt8163.so \
    $(LOCAL_PATH)/lib/hw/gralloc.mt8163.so:system//vendor/lib/hw/gralloc.mt8163.so \
    $(LOCAL_PATH)/lib/hw/hwcomposer.mt8163.so:system/vendor/lib/hw/hwcomposer.mt8163.so \
-   $(LOCAL_PATH)/lib/hw/lights.mt8163.so:system/vendor/lib/hw/lights.mt8163.so \
-   $(LOCAL_PATH)/lib/hw/memtrack.mt8163.so:system/vendor/lib/hw/memtrack.mt8163.so 
+   $(LOCAL_PATH)/lib/hw/memtrack.mt8163.so:system/vendor/lib/hw/memtrack.mt8163.so \
+   $(LOCAL_PATH)/lib/hw/sensors.mt8163.so:system/vendor/lib/hw/sensors.mt8163.so  
 
 
-
+#libshims
 PRODUCT_PACKAGES += \
-	wifi2agps \
+libshim_asp \
+libshim_egl 
 
+#egl
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/lib/egl/libGLES_mali.so:system/vendor/lib/egl/libGLES_mali.so \
+   $(LOCAL_PATH)/lib/libhal_effects.so:system/lib/libhal_effects.so
 
+# call dalvik heap config
+$(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
 
-# WiFi
-PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service \
-    dhcpcd.conf \
-    hostapd \
-    lib_driver_cmd_mt66xx \
-    libwpa_client \
-    wificond \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
-PRODUCT_PACKAGES += \
-    librs_jni \
-    com.android.future.usb.accessory
-
-PRODUCT_PACKAGES += \
-    libnl_2 \
-    charger_res_images \
-    libion
-
-
-# Bluetooth
-PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.0-impl \
-    android.hardware.bluetooth@1.0-service
-    
-
-PRODUCT_PACKAGES += \
-    mtk_symbols
-    
-# Sensors HAL
-PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-impl \
-    android.hardware.light@2.0-service \
-    android.hardware.sensors@1.0-impl \
-    android.hardware.sensors@1.0-service \
-    lights.mt8163
-
-
-# Health HAL
-PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-impl \
-    android.hardware.health@1.0-service
-    power.mt8163
-
-
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator@2.0-impl \
-    android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.composer@2.1-impl \
-    android.hardware.graphics.mapper@2.0-impl \
-    android.hardware.memtrack@1.0-impl \
-    libgralloc_extra \
-    libgui_ext \
-    libui_ext
-
-
-# Audio
-PRODUCT_PACKAGES += \
-    android.hardware.audio@2.0-impl \
-    android.hardware.audio.effect@2.0-impl \
-    android.hardware.audio@2.0-service \
-    audio.a2dp.default \
-    audio.r_submix.default \
-    libaudio-resampler \
-    libtinyalsa \
-    libtinycompress \
-    libtinymix \
-    libtinyxml
-
-
-
-#init files
-PRODUCT_PACKAGES += \
-    fstab.mt8163 \
-    init.mt8163.rc \
-    init.mt8163.usb.rc \
-    init.project.rc \
-    init.trace.rc \
-    init.recovery.mt8163.rc \
-    ueventd.mt8163.rc \
-    multi_init.rc \
-    fstab.zram \
-    meta_init.rc \
-    meta_init_project.rc \
-    meta_init_modem.rc \
-    meta_init_connectivity.rc \
-
-
-
+# call hwui memory config
+$(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
 
    
