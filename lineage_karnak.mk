@@ -178,20 +178,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/mtk-kpd.kl:system/usr/keylayout/mtk-kpd.kl
 
-#thermal
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/thermal/thermal.conf:system/vendor/etc/.tp/thermal.conf \
-    $(LOCAL_PATH)/thermal/thermal.off.conf:system/vendor/etc/.tp/thermal.off.conf \
-    $(LOCAL_PATH)/thermal/.ht120.mtc:system/vendor/etc/.tp/.ht120.mtc
-
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vendor/audio_device.xml:system/vendor/etc/audio_device.xml \
-    $(LOCAL_PATH)/vendor/audio_em.xml:system/vendor/etc/audio_em.xml \
-    $(LOCAL_PATH)/vendor/mtklog-config.prop:system/vendor/etc/mtklog-config.prop \
-    $(LOCAL_PATH)/vendor/mtk_omx_core.cfg:system/vendor/etc/mtk_omx_core.cfg \
-    $(LOCAL_PATH)/vendor/radvd.conf:system/vendor/etc/radvd.conf \
-    $(LOCAL_PATH)/vendor/throttle.sh:system/vendor/etc/throttle.sh
 
 
 
